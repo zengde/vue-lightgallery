@@ -1,32 +1,34 @@
 var path = require('path')
 var webpack = require('webpack')
 var env = process.env.NODE_ENV
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
+  mode: env,
   entry: env == 'development' ? './src/main.js' : './src/index.js',
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     filename: 'vue-lightGallery.js',
-	libraryTarget: 'umd',
-	umdNamedDefine: true
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   module: {
     rules: [
-	  {
-		test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-		loader: 'url-loader',
-		options: {
-		  limit: 10000
-		}
-	  },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000
+        }
+      },
       {
         test: /\.css$/,
         use: [
           'vue-style-loader',
           'css-loader'
         ],
-      },      {
+      }, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -63,7 +65,10 @@ module.exports = {
   performance: {
     hints: false
   },
-  devtool: '#eval-source-map'
+  devtool: '#eval-source-map',
+  plugins: [
+    new VueLoaderPlugin()
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -75,14 +80,20 @@ if (process.env.NODE_ENV === 'production') {
         NODE_ENV: '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
-      }
-    }),
     new webpack.LoaderOptionsPlugin({
       minimize: true
     })
   ])
+  const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+
+  module.exports.optimization = {
+    minimizer: [
+      new UglifyJsPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          warnings: false
+        }
+      })
+    ]
+  }
 }
