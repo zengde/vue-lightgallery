@@ -1,5 +1,7 @@
 ### Introduction
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zengde/vue-lightgallery.svg)](https://greenkeeper.io/)
+
 vue wrapper of [lightgallery.js](https://github.com/sachinchoolur/lightgallery.js)
 
 [online demo](https://zengde.github.io/vue/#/lightGallery) 
